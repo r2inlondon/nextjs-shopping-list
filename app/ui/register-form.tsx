@@ -1,8 +1,10 @@
 "use client";
 
+import { createLogin } from "@/app/lib/actions";
+
 export default function RegisterForm() {
   return (
-    <form>
+    <form action={createLogin}>
       <div className="my-6 flex justify-between md:my-8">
         <div>
           <input
@@ -46,7 +48,7 @@ export default function RegisterForm() {
       <div className="flex justify-between">
         <button
           type="submit"
-          className="my-6 inline-flex w-full justify-center rounded-md border border-transparent bg-indigo-600 px-4 py-2 text-sm font-semibold text-white shadow-sm transition-colors duration-200 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 md:my-8 md:text-lg"
+          className="mt-2 inline-flex w-full justify-center rounded-md border border-transparent bg-indigo-600 px-4 py-2 text-sm font-semibold text-white shadow-sm transition-colors duration-200 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 md:my-8 md:text-lg"
         >
           Sign Up
         </button>

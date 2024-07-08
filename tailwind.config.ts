@@ -13,6 +13,20 @@ const config: Config = {
         "gradient-conic":
           "conic-gradient(from 180deg at 50% 50%, var(--tw-gradient-stops))",
       },
+      colors: {
+        "primary-color": "var(--primary-color)",
+        "txt-pri-color": "var(--txt-pri-color)",
+        "btn-color": "var(--btn-color)",
+        "btn-color-hover": "var(--btn-color-hover)",
+      },
+      height: {
+        "10%": "10%",
+        90: "90vh",
+        95: "95vh",
+      },
+      maxWidth: {
+        550: "550px",
+      },
     },
   },
   plugins: [],
