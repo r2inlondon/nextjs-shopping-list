@@ -5,10 +5,10 @@ import LoginForm from "./ui/login-form";
 export default function Home() {
   return (
     <div className="flex h-screen w-full items-center">
-      <div className="max-w-550 m-auto h-fit bg-white p-2.5 md:p-5">
+      <div className="md:w-550 m-auto w-full bg-white p-2.5 md:p-5">
         <LoginForm />
         <div>
-          <span className="text-txt-pri-color text-md md:text-xl">
+          <span className="text-md text-txt-pri-color md:text-xl">
             Need an account?
           </span>
           <Link href="/register">

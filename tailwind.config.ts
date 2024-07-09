@@ -24,6 +24,9 @@ const config: Config = {
         90: "90vh",
         95: "95vh",
       },
+      width: {
+        550: "550px",
+      },
       maxWidth: {
         550: "550px",
       },
