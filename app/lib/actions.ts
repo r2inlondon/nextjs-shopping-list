@@ -1,24 +1,112 @@
 "use server";
 
+import { redirect } from "next/navigation";
+import { z } from "zod";
+
 const { PrismaClient } = require("@prisma/client");
 const db = new PrismaClient();
 
-export async function createLogin(formData) {
-  const response = await db.user.create({
-    data: {
-      firstName: formData.get("firstName"),
-      lastName: formData.get("lastName"),
-      email: formData.get("email"),
-      password: formData.get("password"),
-    },
-  });
+export interface IRegisterState {
+  errors?: {
+    firstName?: string[];
+    lastName?: string[];
+    email?: string[];
+    password?: string[];
+    confirmPassword?: string[];
+  };
+  message?: string | null;
 }
 
-export async function getLogin(formData) {
-  const response = await db.user.findUnique({
-    where: {
-      email: formData.get("email"),
-    },
+const registerSchema = z
+  .object({
+    firstName: z.string().min(2, "First name must be at least 2 characters."),
+    lastName: z.string().min(2, "Last name must be at least 2 characters."),
+    email: z.string().email("Invalid email address."),
+    password: z.string().min(6, "Password must be at least 6 characters."),
+    confirmPassword: z
+      .string()
+      .min(6, "Password must be at least 6 characters."),
+  })
+  .refine((data) => data.password === data.confirmPassword, {
+    message: "Passwords do not match.",
+    path: ["confirmPassword"],
   });
-  console.log(response);
+
+export async function createLogin(prevState: ILoginState, formData: FormData) {
+  const validatedFields = registerSchema.safeParse({
+    firstName: formData.get("firstName"),
+    lastName: formData.get("lastName"),
+    email: formData.get("email"),
+    password: formData.get("password"),
+    confirmPassword: formData.get("confirmPassword"),
+  });
+
+  if (!validatedFields.success) {
+    return {
+      errors: validatedFields.error.flatten().fieldErrors,
+      message: "Missing Fields. Failed to create user.",
+    };
+  }
+
+  const { firstName, lastName, email, password } = validatedFields.data;
+
+  // create user in database
+  try {
+    await db.user.create({
+      data: {
+        firstName,
+        lastName,
+        email,
+        password,
+      },
+    });
+  } catch (error) {
+    return {
+      message: "Database Error: Failed to create user.",
+    };
+  }
+  redirect("/lists");
+}
+
+export interface ILoginState {
+  errors?: {
+    email?: string[];
+    password?: string[];
+  };
+  message?: string | null;
+}
+
+const LoginSchema = z.object({
+  email: z.string().email("Invalid email address."),
+  password: z.string().min(6, "Invalid Password"),
+});
+
+export async function getLogin(prevState: ILoginState, formData: FormData) {
+  const validatedFields = LoginSchema.safeParse({
+    email: formData.get("email"),
+    password: formData.get("password"),
+  });
+
+  if (!validatedFields.success) {
+    return {
+      errors: validatedFields.error.flatten().fieldErrors,
+      message: "Missing Fields. Failed to login.",
+    };
+  }
+
+  const { email, password } = validatedFields.data;
+
+  try {
+    const response = await db.user.findUnique({
+      where: {
+        email: email,
+      },
+    });
+  } catch (error) {
+    return {
+      message: "Database Error: Failed to login.",
+    };
+  }
+
+  redirect("/lists");
 }
