@@ -3,13 +3,14 @@
 import { Button } from "@headlessui/react";
 import { useState } from "react";
 import MyModal from "./myModal";
+import CreateListForm from "./lists/create-list-form";
 
 interface IProps {
   txt: string;
 }
 
 export default function ModalButton({ txt }: IProps) {
-  const [isOpen, setIsOpen] = useState(true);
+  const [isOpen, setIsOpen] = useState(false);
 
   function open() {
     setIsOpen(true);
@@ -27,7 +28,9 @@ export default function ModalButton({ txt }: IProps) {
       >
         {txt}
       </Button>
-      <MyModal isOpen={isOpen} onClose={close} />
+      <MyModal isOpen={isOpen} onClose={close}>
+        <CreateListForm onClose={close} />
+      </MyModal>
     </>
   );
 }

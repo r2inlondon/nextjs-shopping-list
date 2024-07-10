@@ -1,7 +1,9 @@
 "use server";
 
 import { redirect } from "next/navigation";
+import { revalidatePath } from "next/cache";
 import { z } from "zod";
+import { capitalize } from "lodash";
 
 const { PrismaClient } = require("@prisma/client");
 const db = new PrismaClient();
@@ -109,4 +111,80 @@ export async function getLogin(prevState: ILoginState, formData: FormData) {
   }
 
   redirect("/lists");
+}
+
+export async function createList(userId: string, name: string) {
+  const capitalized = capitalize(name);
+  try {
+    const response = await db.list.create({
+      data: {
+        userId,
+        name: capitalized,
+      },
+    });
+    console.log(response);
+  } catch (error) {
+    console.error(error);
+    return {
+      message: "Database Error: Failed to create list.",
+    };
+  }
+
+  await revalidatePath("/lists");
+}
+
+export async function deleteList(listId: string) {
+  try {
+    const response = await db.list.delete({
+      where: {
+        id: listId,
+      },
+    });
+    console.log(response);
+  } catch (error) {
+    console.error(error);
+    return {
+      message: "Database Error: Failed to delete list.",
+    };
+  }
+
+  await revalidatePath("/lists");
+}
+
+export async function getLists(userId: string) {
+  try {
+    const response = await db.list.findMany({
+      where: {
+        userId,
+      },
+    });
+    return response;
+  } catch (error) {
+    console.error(error);
+    return {
+      message: "Database Error: Failed to get lists.",
+    };
+  }
+}
+
+export async function updateList(listId: string, name: string) {
+  const capitalized = capitalize(name);
+  try {
+    const response = await db.list.update({
+      where: {
+        id: listId,
+      },
+      data: {
+        name: capitalized,
+      },
+    });
+    console.log(response);
+  } catch (error) {
+    console.error(error);
+    return {
+      message: "Database Error: Failed to update list.",
+    };
+  }
+
+  await revalidatePath("/lists");
 }
