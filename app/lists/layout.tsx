@@ -8,7 +8,7 @@ export default function Layout({ children }: { children: React.ReactNode }) {
     <div className="flex h-screen w-full items-center">
       <div className="md:w-550 m-auto h-90 w-full bg-white p-2.5 md:p-5">
         <Header />
-        <div className="flex justify-end">
+        <div className="my-2.5 flex justify-end md:my-4">
           <ModalButton txt={"New List +"} />
         </div>
         {children}

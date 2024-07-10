@@ -4,6 +4,7 @@ import { redirect } from "next/navigation";
 import { revalidatePath } from "next/cache";
 import { z } from "zod";
 import { capitalize } from "lodash";
+import { ListType } from "./definitions";
 
 const { PrismaClient } = require("@prisma/client");
 const db = new PrismaClient();
@@ -153,7 +154,7 @@ export async function deleteList(listId: string) {
 
 export async function getLists(userId: string) {
   try {
-    const response = await db.list.findMany({
+    const response: ListType[] = await db.list.findMany({
       where: {
         userId,
       },
@@ -161,9 +162,7 @@ export async function getLists(userId: string) {
     return response;
   } catch (error) {
     console.error(error);
-    return {
-      message: "Database Error: Failed to get lists.",
-    };
+    return [];
   }
 }
 
