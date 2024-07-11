@@ -131,7 +131,7 @@ export async function createList(userId: string, name: string) {
     };
   }
 
-  await revalidatePath("/lists");
+  revalidatePath("/lists");
 }
 
 export async function deleteList(listId: string) {
@@ -149,7 +149,7 @@ export async function deleteList(listId: string) {
     };
   }
 
-  await revalidatePath("/lists");
+  revalidatePath("/lists");
 }
 
 export async function getLists(userId: string) {
@@ -185,5 +185,5 @@ export async function updateList(listId: string, name: string) {
     };
   }
 
-  await revalidatePath("/lists");
+  revalidatePath("/lists");
 }
