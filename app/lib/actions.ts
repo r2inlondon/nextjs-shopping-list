@@ -5,9 +5,7 @@ import { revalidatePath } from "next/cache";
 import { z } from "zod";
 import { capitalize } from "lodash";
 import { ListType } from "./definitions";
-
-const { PrismaClient } = require("@prisma/client");
-const db = new PrismaClient();
+import prisma from "./prisma";
 
 export interface IRegisterState {
   errors?: {
@@ -55,7 +53,7 @@ export async function createLogin(prevState: ILoginState, formData: FormData) {
 
   // create user in database
   try {
-    await db.user.create({
+    await prisma.user.create({
       data: {
         firstName,
         lastName,
@@ -100,7 +98,7 @@ export async function getLogin(prevState: ILoginState, formData: FormData) {
   const { email, password } = validatedFields.data;
 
   try {
-    const response = await db.user.findUnique({
+    const response = await prisma.user.findUnique({
       where: {
         email: email,
       },
@@ -117,7 +115,7 @@ export async function getLogin(prevState: ILoginState, formData: FormData) {
 export async function createList(userId: string, name: string) {
   const capitalized = capitalize(name);
   try {
-    const response = await db.list.create({
+    const response = await prisma.list.create({
       data: {
         userId,
         name: capitalized,
@@ -136,7 +134,7 @@ export async function createList(userId: string, name: string) {
 
 export async function deleteList(listId: string) {
   try {
-    const response = await db.list.delete({
+    const response = await prisma.list.delete({
       where: {
         id: listId,
       },
@@ -154,7 +152,7 @@ export async function deleteList(listId: string) {
 
 export async function getLists(userId: string) {
   try {
-    const response: ListType[] = await db.list.findMany({
+    const response: ListType[] = await prisma.list.findMany({
       where: {
         userId,
       },
@@ -169,7 +167,7 @@ export async function getLists(userId: string) {
 export async function updateList(listId: string, name: string) {
   const capitalized = capitalize(name);
   try {
-    const response = await db.list.update({
+    const response = await prisma.list.update({
       where: {
         id: listId,
       },
