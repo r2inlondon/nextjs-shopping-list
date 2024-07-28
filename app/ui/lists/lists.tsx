@@ -11,8 +11,6 @@ interface IProps {
 export default async function Lists({ userId }: IProps) {
   const lists: ListType[] = await getLists(userId);
 
-  console.log(lists);
-
   return (
     <ul>
       {lists.map((list) => (
