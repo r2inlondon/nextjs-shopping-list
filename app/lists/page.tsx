@@ -1,7 +1,28 @@
+import { cookies } from "next/headers";
+import { redirect } from 'next/navigation'
+import { JWTPayload } from "jose";
+
 import Lists from "@/app/ui/lists/lists";
+import { decrypt } from "../lib/sessions";
 
-export default function page() {
-  const userId = "7ec26f8a-bc9a-4ec2-a997-53180839555e";
 
-  return <div>{userId && <Lists userId={userId} />}</div>;
+const accessToken = process.env.ACCESS_TOKEN;
+
+export default async function page() {
+
+  if (!accessToken) {
+    throw new Error("ACCESS_TOKEN environment variable is not defined");
+  }
+
+  const cookieStore = cookies();
+  const session = cookieStore.get(accessToken)?.value;
+  const res = await decrypt(session);
+
+  if (!res) {
+    redirect('/');
+  }
+
+  const { userId } = res;
+
+  return <Lists userId={userId} />
 }

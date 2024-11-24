@@ -4,9 +4,11 @@ import { redirect } from "next/navigation";
 import { revalidatePath } from "next/cache";
 import { z } from "zod";
 import { capitalize } from "lodash";
-import { ListType } from "./definitions";
+import bcrypt from "bcrypt";
 import prisma from "./prisma";
 
+import { ListType } from "./definitions";
+import { createSession } from "./session";
 export interface IRegisterState {
   errors?: {
     firstName?: string[];
@@ -51,21 +53,27 @@ export async function createLogin(prevState: ILoginState, formData: FormData) {
 
   const { firstName, lastName, email, password } = validatedFields.data;
 
-  // create user in database
-  try {
-    await prisma.user.create({
-      data: {
-        firstName,
-        lastName,
-        email,
-        password,
-      },
-    });
-  } catch (error) {
+  const hashedPassword = await bcrypt.hash(password, 10);
+
+  const newUser = await prisma.user.create({
+    data: {
+      firstName,
+      lastName,
+      email,
+      password: hashedPassword,
+    },
+  });
+
+  if (!newUser) {
     return {
-      message: "Database Error: Failed to create user.",
+      message: "An error occurred while creating your account.",
     };
   }
+
+  console.log("********", newUser);
+
+  await createSession(newUser.id);
+
   redirect("/lists");
 }
 
@@ -98,11 +106,23 @@ export async function getLogin(prevState: ILoginState, formData: FormData) {
   const { email, password } = validatedFields.data;
 
   try {
-    const response = await prisma.user.findUnique({
+    const existingUser = await prisma.user.findUnique({
       where: {
         email: email,
       },
     });
+
+    if (!existingUser) {
+      throw new Error("User not found");
+    }
+
+    const validPassword = await bcrypt.compare(password, existingUser.password);
+
+    if (!validPassword) {
+      throw new Error("Invalid login credentials.");
+    }
+
+    await createSession(existingUser.id);
   } catch (error) {
     return {
       message: "Database Error: Failed to login.",

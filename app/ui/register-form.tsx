@@ -94,6 +94,14 @@ export default function RegisterForm() {
             </p>
           ))}
       </div>
+
+      <div id="customer-error" aria-live="polite" aria-atomic="true">
+        {state.message &&
+          <p className="text-sm text-red-500" key={state.message}>
+            {state.message}
+          </p>
+        }
+      </div>
       <div className="flex justify-between">
         <button
           type="submit"

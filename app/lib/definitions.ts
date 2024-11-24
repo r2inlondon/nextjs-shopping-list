@@ -3,3 +3,8 @@ export type ListType = {
   name: string;
   userId: string;
 };
+
+export type SessionPayload = {
+  userId: string;
+  expiresAt: Date;
+};

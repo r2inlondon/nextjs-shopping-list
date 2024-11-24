@@ -15,7 +15,7 @@ export default function LoginForm() {
         type="text"
         placeholder="Email address"
         name="email"
-        // autoComplete="new-password"
+      // autoComplete="new-password"
       />
       <div id="customer-error" aria-live="polite" aria-atomic="true">
         {state.errors?.email &&
