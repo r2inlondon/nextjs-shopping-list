@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import { z } from "zod";
-import { createList } from "@/app/lib/actions";
+import { createList } from "@/app/lib/listsActions";
 
 interface ListFormProps {
   onClose: () => void;

@@ -2,7 +2,7 @@
 
 import { useFormState } from "react-dom";
 
-import { ILoginState, getLogin } from "@/app/lib/actions";
+import { ILoginState, getLogin } from "@/app/lib/userActions";
 
 export default function LoginForm() {
   const initialState: ILoginState = { message: null, errors: {} };

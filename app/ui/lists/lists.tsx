@@ -1,4 +1,4 @@
-import { getLists } from "@/app/lib/actions";
+import { getLists } from "@/app/lib/listsActions";
 import { ListType } from "@/app/lib/definitions";
 import Link from "next/link";
 

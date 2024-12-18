@@ -2,7 +2,7 @@
 
 import { useFormState } from "react-dom";
 
-import { IRegisterState, createLogin } from "@/app/lib/actions";
+import { IRegisterState, createLogin } from "@/app/lib/userActions";
 
 export default function RegisterForm() {
   const initialState: IRegisterState = { message: null, errors: {} };
