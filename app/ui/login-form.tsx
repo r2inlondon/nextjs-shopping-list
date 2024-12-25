@@ -2,11 +2,12 @@
 
 import { useFormState } from "react-dom";
 
-import { ILoginState, getLogin } from "@/app/lib/userActions";
+import { login } from "@/app/lib/userActions";
+import { ILoginState } from "../lib/definitions";
 
 export default function LoginForm() {
   const initialState: ILoginState = { message: null, errors: {} };
-  const [state, formAction] = useFormState(getLogin, initialState);
+  const [state, formAction] = useFormState(login, initialState);
 
   return (
     <form action={formAction} className="my-6 w-full md:my-8">

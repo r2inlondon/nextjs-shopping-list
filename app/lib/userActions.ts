@@ -5,18 +5,8 @@ import { z } from "zod";
 import bcrypt from "bcrypt";
 import prisma from "./prisma";
 
-import { createSession } from "./session";
-
-export interface IRegisterState {
-  errors?: {
-    firstName?: string[];
-    lastName?: string[];
-    email?: string[];
-    password?: string[];
-    confirmPassword?: string[];
-  };
-  message?: string | null;
-}
+import { createSession, deleteSession } from "./session";
+import { ILoginState } from "./definitions";
 
 const registerSchema = z
   .object({
@@ -67,20 +57,9 @@ export async function createLogin(prevState: ILoginState, formData: FormData) {
       message: "An error occurred while creating your account.",
     };
   }
-
-  console.log("********", newUser);
-
   await createSession(newUser.id);
 
   redirect("/lists");
-}
-
-export interface ILoginState {
-  errors?: {
-    email?: string[];
-    password?: string[];
-  };
-  message?: string | null;
 }
 
 const LoginSchema = z.object({
@@ -88,7 +67,7 @@ const LoginSchema = z.object({
   password: z.string().min(6, "Invalid Password"),
 });
 
-export async function getLogin(prevState: ILoginState, formData: FormData) {
+export async function login(prevState: ILoginState, formData: FormData) {
   const validatedFields = LoginSchema.safeParse({
     email: formData.get("email"),
     password: formData.get("password"),
@@ -128,4 +107,10 @@ export async function getLogin(prevState: ILoginState, formData: FormData) {
   }
 
   redirect("/lists");
+}
+
+export async function logout() {
+  deleteSession();
+
+  redirect("/");
 }

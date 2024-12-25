@@ -54,5 +54,7 @@ export async function deleteSession() {
   }
 
   const cookieStore = cookies();
-  cookieStore.delete(accessToken);
+  const res = cookieStore.delete(accessToken);
+
+  console.log("******", res);
 }

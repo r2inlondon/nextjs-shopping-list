@@ -24,7 +24,7 @@ export default function ModalButton({ txt }: IProps) {
     <>
       <Button
         onClick={open}
-        className="inline-flex justify-center rounded-md border border-transparent bg-btn-color px-4 py-2 text-base text-lg font-semibold text-white duration-300 hover:scale-105 sm:ml-3 sm:w-auto"
+        className="inline-flex justify-center rounded-md border border-transparent bg-btn-color px-4 py-2 text-lg font-semibold text-white duration-300 hover:scale-105 sm:ml-3 sm:w-auto"
       >
         {txt}
       </Button>

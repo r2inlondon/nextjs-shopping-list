@@ -1,5 +1,5 @@
-export default function Page(props) {
-    console.log(props)
+export default function Page() {
+
   return (
     <div>page</div>
   )
