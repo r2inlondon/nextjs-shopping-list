@@ -29,7 +29,7 @@ export default async function Lists({ userId }: IProps) {
                 <p>{list.name}</p>
               </Link>
               <div className="grow-0 flex items-center">
-                <KebabButton />
+                <KebabButton listId={list.id} />
               </div>
             </div>
           </li>
