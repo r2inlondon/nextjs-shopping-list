@@ -14,7 +14,6 @@ export async function createList(userId: string, name: string) {
         name: capitalized,
       },
     });
-    console.log(response);
   } catch (error) {
     console.error(error);
     return {
@@ -32,7 +31,6 @@ export async function deleteList(listId: string) {
         id: listId,
       },
     });
-    console.log(response);
   } catch (error) {
     console.error(error);
     return {

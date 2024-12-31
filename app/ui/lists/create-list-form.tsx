@@ -6,14 +6,14 @@ import { createList } from "@/app/lib/listsActions";
 
 interface ListFormProps {
   onClose: () => void;
+  userId: string;
 }
 
 const CreateListSchema = z.string().min(1, "Name is required.");
 
-export default function CreateListForm({ onClose }: ListFormProps) {
+export default function CreateListForm({ onClose, userId }: ListFormProps) {
   const [listName, setListName] = useState("");
   const [error, setError] = useState("");
-  const userId = "7ec26f8a-bc9a-4ec2-a997-53180839555e";
 
   function handleChanges(e: any) {
     setListName(e.target.value);

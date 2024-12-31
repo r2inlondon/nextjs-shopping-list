@@ -7,9 +7,10 @@ import CreateListForm from "./lists/create-list-form";
 
 interface IProps {
   txt: string;
+  userId: string;
 }
 
-export default function ModalButton({ txt }: IProps) {
+export default function ModalButton({ txt, userId }: IProps) {
   const [isOpen, setIsOpen] = useState(false);
 
   function open() {
@@ -29,7 +30,7 @@ export default function ModalButton({ txt }: IProps) {
         {txt}
       </Button>
       <MyModal isOpen={isOpen} onClose={close}>
-        <CreateListForm onClose={close} />
+        <CreateListForm onClose={close} userId={userId} />
       </MyModal>
     </>
   );

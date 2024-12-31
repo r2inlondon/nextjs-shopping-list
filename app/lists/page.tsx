@@ -1,6 +1,5 @@
 import { cookies } from "next/headers";
 import { redirect } from 'next/navigation'
-import { JWTPayload } from "jose";
 
 import Lists from "@/app/ui/lists/lists";
 import { decrypt } from "../lib/sessions";
