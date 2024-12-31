@@ -36,5 +36,13 @@ export default async function middleware(request: NextRequest) {
 }
 
 export const config = {
-  matcher: "/lists",
+  matcher: [
+    {
+      source: "/lists",
+      missing: [
+        // Exclude Server Actions
+        { type: "header", key: "next-action" },
+      ],
+    },
+  ],
 };
