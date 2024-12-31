@@ -23,8 +23,6 @@ export default function CreateListForm({ onClose, userId }: ListFormProps) {
     e.preventDefault();
 
     const validatedFields = CreateListSchema.safeParse(listName);
-    console.log(listName);
-    console.log(validatedFields);
 
     if (!validatedFields.success) {
       setError("List name is incorrect");
