@@ -26,11 +26,13 @@ model User {
 }
 
 model List {
-  id       String     @id @default(uuid())
-  name     String     @db.VarChar(255)
-  user     User       @relation(fields: [userId], references: [id], onDelete: Cascade)
-  userId   String
-  products Shopping[]
+  id           String     @id @default(uuid())
+  createdAt    DateTime   @default(now())
+  updatedAt    DateTime   @updatedAt
+  name         String     @db.VarChar(255)
+  user         User       @relation(fields: [userId], references: [id], onDelete: Cascade)
+  userId       String
+  products     Shopping[]
 }
 
 model Shopping {
@@ -44,7 +46,9 @@ model Shopping {
 }
 
 model Product {
-  id    String     @id @default(uuid())
-  name  String     @unique @db.VarChar(255)
-  lists Shopping[]
+  id           String     @id @default(uuid())
+  createdAt    DateTime   @default(now())
+  updatedAt    DateTime   @updatedAt
+  name         String     @unique @db.VarChar(255)
+  lists        Shopping[]
 }
